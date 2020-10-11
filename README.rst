@@ -67,6 +67,30 @@ packages must be installed in the virtual environment::
 
     $ pip install gevent gevent-websocket
 
+----
+
+# Python_Socket.io:
+
+git init
+
+git add .
+
+git commit -m "Belajar Socket Python"
+
+git branch -M main
+
+git remote add origin https://github.com/ryanbekabe/Python_Socket.io.git
+
+git push -u origin main
+
+----
+
+apt install python3-pip
+
+python3.5 -m pip install -r requirements.txt
+
+python3.5 app.py
+
 
 ----
 
