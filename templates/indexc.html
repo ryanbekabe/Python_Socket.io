@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Python SocketIO</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            var socket = io.connect();
+            var clients = 0;
+
+            socket.on('connect', function() {
+				clients++;
+                socket.emit('my_event', {data: ' BKB-3 I\'m connected!'});
+				socket.emit('my_broadcast_event', {data: ' BKB-3a broadcast_data. ' + clients});
+				console.log(clients);
+            });
+            socket.on('disconnect', function() {
+				clients--;
+                $('#log').append('<br>BKB-4 Disconnected');
+				document.getElementById("usersOnline").innerText = clients;
+				socket.emit('my_broadcast_event', {data: ' BKB-3b broadcast_data.. ' + clients});
+				console.log(clients);
+            });
+            socket.on('my_response', function(msg) {
+                $('#log').append('<br>Received: ' + msg.data);
+            });
+
+            socket.on('my_responseb', function(msg) {
+                $('#log').append('<br>Receivedb: ' + msg.data);
+				document.getElementById("usersOnline").innerText = msg.data;
+            });
+
+            $('form#emit').submit(function(event) {
+                socket.emit('my_event', {data: $('#emit_data').val()});
+                return false;
+            });
+            $('form#broadcast').submit(function(event) {
+                socket.emit('my_broadcast_event', {data: $('#broadcast_data').val()});
+                return false;
+            });
+            $('form#disconnect').submit(function(event) {
+                socket.emit('disconnect_request');
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="usersOnline">ini_div_usersOnline</div>
+<div><p id="log"></p></div>
+</body>
+</html>
